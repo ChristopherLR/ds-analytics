@@ -24,18 +24,6 @@ let cost_options = {
     ],
   },
 };
-let data = {
-  datasets: [
-    {
-      barPercentage: 0.5,
-      barThickness: 6,
-      maxBarThickness: 8,
-      minBarLength: 2,
-      data: [10, 20, 30, 40, 50, 60, 70],
-    },
-  ],
-};
-console.log(SERVERS);
 let cost_chart = new Chart(cost_ctx, {
   type: "bar",
   options: cost_options,
@@ -44,8 +32,8 @@ let cost_chart = new Chart(cost_ctx, {
     datasets: [
       {
         label: "Server Cost",
-        backgroundColor: "rgb(255, 99, 132)",
-        borderColor: "rgb(255, 99, 132)",
+        backgroundColor: "rgb(0, 99, 132)",
+        borderColor: "rgb(0, 99, 132)",
         data: [],
       },
     ],

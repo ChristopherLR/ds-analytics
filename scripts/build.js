@@ -22,6 +22,8 @@ d3.json("data.json").then((json) => {
       $(this).find(".job-stats").toggle("hide");
     });
   });
+  console.log(SERVERS);
+  console.log(JOBS);
 });
 
 function build_t_buttons() {
@@ -76,25 +78,24 @@ function run_simulation(t) {
 
 function build_chart(t) {
   let keys = Object.keys(SERVERS);
+  console.log(keys);
   let avg_util = {};
   let current_jobs = [];
   let active_servers = [];
-  JOBS.map((job) => {
-    if (avg_util[job.server_type]) {
-    } else {
-      avg_util[job.server_type] = {};
-    }
-    if (avg_util[job.server_type][job.server_id]) {
-    } else {
-      avg_util[job.server_type][job.server_id] = {
+  keys.map((key) => {
+    avg_util[key] = {};
+    avg_util[key]["avg"] = 0.0;
+    avg_util[key]["total"] = 0.0;
+    avg_util[key]["total_boot"] = 0.0;
+    for (let i = 0; i < parseInt(SERVERS[key].limit); i++) {
+      avg_util[key][i] = {
         bootup: false,
         bootup_time: 0,
         util: 0,
       };
-      avg_util[job.server_type]["avg"] = 0.0;
-      avg_util[job.server_type]["total"] = 0.0;
-      avg_util[job.server_type]["total_boot"] = 0;
     }
+  });
+  JOBS.map((job) => {
     if (t >= job.start) {
       current_jobs.push(job);
     }
@@ -125,8 +126,8 @@ function build_chart(t) {
     }
   });
 
-  console.log(avg_util);
   keys.map((key) => {
+    console.log(avg_util[key] + key);
     let count = 0;
     Object.keys(avg_util[key]).map((s_k) => {
       if (avg_util[key][s_k].bootup) {

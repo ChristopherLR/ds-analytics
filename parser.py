@@ -92,8 +92,6 @@ def parse(input):
             'req_memory': stats['req_memory'],
             'req_disk': stats['req_disk']
         }
-    
-    # TODO: abort if no job has an 'end'
 
     return jobs
 
@@ -108,19 +106,24 @@ if __name__ == '__main__':
         args = (sys.argv[1],)
 
     if not os.path.isfile('./ds-server'):
+        print("ds-server not in directory")
         sys.exit('ABORTED: ds-server not in the script\'s directory')
-    
-    print('Starting server...')
+
+
+    print('Starting server with config {}'.format(args))
+    sys.stdout.flush()
 
     thread_pool = multiprocessing.pool.ThreadPool(processes=1)
     s_thread = thread_pool.apply_async(start_server, args)
-    
+
     time.sleep(1) # Wait a bit to ensure server has time to start
     print('Waiting for client... \n... (run your client now)')
+    sys.stdout.flush()
 
     s_output = s_thread.get()
 
     if not s_output:
+        print("no output from server")
         sys.exit('ABORTED: no output from server')
 
     # system.xml and ds-jobs.xml should exist now. Abort if they don't
@@ -138,7 +141,7 @@ if __name__ == '__main__':
 
     print('Writing to JS file...')
 
-    with open('__DATA.js', 'w') as fp:
+    with open('data.json', 'w') as fp:
         fp.write(json.dumps(data))
 
-    print('\n===\nDone. Now open `visualiser.html`')
+    print("Parser Done")
