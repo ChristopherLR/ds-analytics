@@ -1,5 +1,19 @@
-var ctx = document.getElementById("myChart").getContext("2d");
+var util_ctx = document.getElementById("util").getContext("2d");
+var cost_ctx = document.getElementById("cost").getContext("2d");
 let options = {
+  scales: {
+    xAxes: [
+      {
+        gridLines: {
+          offsetGridLines: true,
+        },
+      },
+    ],
+    yAxes: [{ ticks: { beginAtZero: true, max: 100 } }],
+  },
+};
+
+let cost_options = {
   scales: {
     xAxes: [
       {
@@ -10,7 +24,6 @@ let options = {
     ],
   },
 };
-
 let data = {
   datasets: [
     {
@@ -23,21 +36,37 @@ let data = {
   ],
 };
 console.log(SERVERS);
-var myBarChart = new Chart(ctx, {
+let cost_chart = new Chart(cost_ctx, {
   type: "bar",
-  options: options,
+  options: cost_options,
   data: {
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    labels: [],
     datasets: [
       {
-        label: "My First dataset",
+        label: "Server Cost",
         backgroundColor: "rgb(255, 99, 132)",
         borderColor: "rgb(255, 99, 132)",
-        data: [0, 10, 5, 2, 20, 30, 45],
+        data: [],
       },
     ],
   },
 });
 
-myBarChart.canvas.parentNode.style.height = "500px";
-myBarChart.canvas.parentNode.style.width = "500px";
+let util_chart = new Chart(util_ctx, {
+  type: "bar",
+  options: options,
+  data: {
+    labels: [],
+    datasets: [
+      {
+        label: "Server Utilisation",
+        backgroundColor: "rgb(255, 99, 132)",
+        borderColor: "rgb(255, 99, 132)",
+        data: [],
+      },
+    ],
+  },
+});
+
+// myBarChart.canvas.parentNode.style.height = "500px";
+// myBarChart.canvas.parentNode.style.width = "500px";

@@ -3,21 +3,29 @@
         "tiny": {
             "cores": "1",
             "memory": "1000",
+            "rate": "0.10",
+            "bootup_time": "60",
             "disk": "4000"
         },
         "small": {
             "cores": "2",
             "memory": "4000",
+            "rate": "0.20",
+            "bootup_time": "60",
             "disk": "16000"
         },
         "medium": {
             "cores": "4",
             "memory": "16000",
+            "rate": "0.40",
+            "bootup_time": "60",
             "disk": "64000"
         },
         "large": {
             "cores": "8",
             "memory": "32000",
+            "rate": "0.80",
+            "bootup_time": "60",
             "disk": "256000"
         }
     },

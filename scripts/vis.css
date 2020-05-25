@@ -85,3 +85,9 @@ ul.job-stats {
 ul.server-jobs li:not(:last-child) {
     margin-bottom: .3em;
 }
+
+.chart-container {
+	display: flex;
+	flex-direction: row;
+	max-width: 50%;
+}

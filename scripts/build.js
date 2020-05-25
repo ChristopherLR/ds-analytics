@@ -2,7 +2,6 @@ let SERVERS = undefined;
 let JOBS = undefined;
 
 d3.json("data.json").then((json) => {
-  console.log(json);
   SERVERS = json.servers;
   JOBS = $.map(json.jobs, function (value, index) {
     value.key = index;
@@ -45,12 +44,12 @@ function build_t_buttons() {
 }
 
 function run_simulation(t) {
+  build_chart(t);
   let servers = {};
   let update = "";
   JOBS.map((job) => {
     let start = job.start;
     let end = job.end;
-
     if (start > t || end < t) return;
     let server_type = job.server_type;
     let server_id = job.server_id;
@@ -64,7 +63,6 @@ function run_simulation(t) {
       req_memory: job.req_memory,
       req_disk: job.req_disk,
     });
-
     if (start === t) {
       update = `job ${job} started on server ${server_type} (#${server_id})`;
     } else if (end === t) {
@@ -74,6 +72,92 @@ function run_simulation(t) {
 
   $("#update").html(`<strong>At t = ${t}</strong>: <i>${update}</i>`);
   return servers;
+}
+
+function build_chart(t) {
+  let keys = Object.keys(SERVERS);
+  let avg_util = {};
+  let current_jobs = [];
+  let active_servers = [];
+  JOBS.map((job) => {
+    if (avg_util[job.server_type]) {
+    } else {
+      avg_util[job.server_type] = {};
+    }
+    if (avg_util[job.server_type][job.server_id]) {
+    } else {
+      avg_util[job.server_type][job.server_id] = {
+        bootup: false,
+        bootup_time: 0,
+        util: 0,
+      };
+      avg_util[job.server_type]["avg"] = 0.0;
+      avg_util[job.server_type]["total"] = 0.0;
+      avg_util[job.server_type]["total_boot"] = 0;
+    }
+    if (t >= job.start) {
+      current_jobs.push(job);
+    }
+  });
+  current_jobs.map((job) => {
+    if (avg_util[job.server_type][job.server_id]["bootup"]) {
+      if (t > job.end) {
+        avg_util[job.server_type][job.server_id]["util"] += job.end - job.start;
+      } else {
+        avg_util[job.server_type][job.server_id]["util"] += t - job.start;
+      }
+      /*console.log(
+        `${job.server_type}${job.server_id}:${t} - ${job.start}: ${
+          t - job.start
+        }`
+      );*/
+    } else {
+      avg_util[job.server_type][job.server_id]["bootup_time"] = job.start;
+      avg_util[job.server_type][job.server_id]["bootup"] = true;
+      if (t > job.end) {
+        avg_util[job.server_type][job.server_id].util = job.end - job.start;
+      } else {
+        avg_util[job.server_type][job.server_id].util = t - job.start;
+      }
+      /*console.log(
+        job.server_id + `adding:${t} - ${job.start}: ${t - job.start}`
+      );*/
+    }
+  });
+
+  console.log(avg_util);
+  keys.map((key) => {
+    let count = 0;
+    Object.keys(avg_util[key]).map((s_k) => {
+      if (avg_util[key][s_k].bootup) {
+        count += 1;
+        avg_util[key].total += avg_util[key][s_k].util;
+        avg_util[key].total_boot += t - avg_util[key][s_k].bootup_time;
+      }
+    });
+    console.log(`${avg_util[key].avg} ${avg_util[key].totalboot}`);
+    avg_util[key].avg = (avg_util[key].total / avg_util[key].total_boot) * 100;
+  });
+
+  util_chart.data.labels = [];
+  cost_chart.data.labels = [];
+  util_chart.data.datasets[0].data = [];
+  cost_chart.data.datasets[0].data = [];
+  keys.map((server) => {
+    util_chart.data.labels.push(server);
+    cost_chart.data.labels.push(server);
+    cost_chart.data.datasets.forEach((dataset) => {
+      dataset.data.push(
+        (avg_util[server].total_boot / 60 / 60) *
+          parseFloat(SERVERS[server].rate)
+      );
+    });
+    util_chart.data.datasets.forEach((dataset) => {
+      dataset.data.push(avg_util[server].avg);
+    });
+  });
+  util_chart.update();
+  cost_chart.update();
 }
 
 function get_jobs_usage(jobs) {
@@ -96,16 +180,12 @@ function get_jobs_usage(jobs) {
 
 function build_servers(t) {
   let servers = run_simulation(t);
-
-  console.log(servers);
   $("#servers").empty();
 
   let keys = Object.keys(servers);
   keys.map((server) => {
     let jobs = servers[server];
-    console.log(jobs);
     let jobs_html = "";
-
     if (jobs.length !== 0) {
       for (let job of jobs) {
         jobs_html += `
@@ -126,7 +206,6 @@ function build_servers(t) {
     let stats = SERVERS[server.split(" ")[0]];
     let usage = get_jobs_usage(jobs);
 
-    console.log(server, SERVERS);
     /* O LAWD HE COMIN */
     $("#servers").append(`<div class="server">
                         <strong class="server-header">${server}</strong>

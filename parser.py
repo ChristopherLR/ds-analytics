@@ -29,6 +29,9 @@ def get_servers():
         servers[element.get('type')] = {
             'cores': element.get('coreCount'),
             'memory': element.get('memory'),
+            'rate': element.get('rate'),
+            'limit': element.get('limit'),
+            'bootup_time': element.get('bootupTime'),
             'disk': element.get('disk')
         }
 
