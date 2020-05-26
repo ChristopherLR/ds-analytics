@@ -1,15 +1,26 @@
 let SERVERS = undefined;
+let json = undefined;
 let JOBS = undefined;
+async function init() {
+  await d3
+    .json("data.json")
+    .then((data) => {
+      SERVERS = data.servers;
+      JOBS = $.map(data.jobs, function (value, index) {
+        value.key = index;
+        return value;
+      }).sort(function (a, b) {
+        return a.start - b.start;
+      });
+      json = data;
+      console.log(SERVERS);
+      console.log(data.jobs);
+    })
+    .catch((err) => console.log(err));
+  await init_page();
+}
 
-d3.json("data.json").then((json) => {
-  SERVERS = json.servers;
-  JOBS = $.map(json.jobs, function (value, index) {
-    value.key = index;
-    return value;
-  }).sort(function (a, b) {
-    return a.start - b.start;
-  });
-
+async function init_page() {
   $(document).ready(function () {
     build_t_buttons();
     build_servers(JOBS[0].start);
@@ -22,11 +33,12 @@ d3.json("data.json").then((json) => {
       $(this).find(".job-stats").toggle("hide");
     });
   });
-  console.log(SERVERS);
-  console.log(JOBS);
-});
+}
 
+// INITIALISING the servers and jobs
+init();
 function build_t_buttons() {
+  $("#times").empty();
   let times = [];
 
   for (let job in JOBS) {
@@ -47,6 +59,8 @@ function build_t_buttons() {
 
 function run_simulation(t) {
   build_chart(t);
+
+  $("#update").empty();
   let servers = {};
   let update = "";
   JOBS.map((job) => {
@@ -78,7 +92,6 @@ function run_simulation(t) {
 
 function build_chart(t) {
   let keys = Object.keys(SERVERS);
-  console.log(keys);
   let avg_util = {};
   let current_jobs = [];
   let active_servers = [];
@@ -127,7 +140,6 @@ function build_chart(t) {
   });
 
   keys.map((key) => {
-    console.log(avg_util[key] + key);
     let count = 0;
     Object.keys(avg_util[key]).map((s_k) => {
       if (avg_util[key][s_k].bootup) {
@@ -136,7 +148,6 @@ function build_chart(t) {
         avg_util[key].total_boot += t - avg_util[key][s_k].bootup_time;
       }
     });
-    console.log(`${avg_util[key].avg} ${avg_util[key].totalboot}`);
     avg_util[key].avg = (avg_util[key].total / avg_util[key].total_boot) * 100;
   });
 

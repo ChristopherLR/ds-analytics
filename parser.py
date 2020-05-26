@@ -117,7 +117,7 @@ if __name__ == '__main__':
     s_thread = thread_pool.apply_async(start_server, args)
 
     time.sleep(1) # Wait a bit to ensure server has time to start
-    print('Waiting for client... \n... (run your client now)')
+    print(0x42, 0x42)
     sys.stdout.flush()
 
     s_output = s_thread.get()
@@ -141,7 +141,7 @@ if __name__ == '__main__':
 
     print('Writing to JS file...')
 
-    with open('data.json', 'w') as fp:
+    with open('./data/data.json', 'w') as fp:
         fp.write(json.dumps(data))
 
     print("Parser Done")

@@ -2,13 +2,28 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const router = express.Router();
+const fs = require("fs");
+const ejs = require("ejs");
+
+const config_dir = path.join(__dirname, "configs");
 
 const { spawn } = require("child_process");
 
 const port = 3000;
 
 router.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname + "/visualiser.html"));
+  let confs = [];
+  fs.readdir(config_dir, function (err, files) {
+    //handling error
+    if (err) {
+      return console.log("Unable to scan directory: " + err);
+    }
+    //listing all files using forEach
+    confs = files;
+    console.log("loaded:");
+    console.log(confs);
+    res.sendFile(path.join(__dirname + "/visualiser.html"));
+  });
 });
 
 app.post("/config/:config", (req, res) => {

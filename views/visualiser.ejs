@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>DS Analytics</title>
+    <link rel="stylesheet" type="text/css" href="vis.css" />
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="build.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+		<script>
+		 function handle_click(){
+			 //ajaxStart();
+			 let loader = document.getElementById("loader");
+			 let conf  = document.getElementById("conf-sel");
+			 let algo  = document.getElementById("algo-sel");
+			 let conf_val = conf.options[conf.selectedIndex].value
+			 let algo_val = algo.options[algo.selectedIndex].value
+			 console.log(conf_val);
+			 console.log(algo_val);
+			 $.ajax({
+				 beforeSend: () => { loader.innerText = "Loading..."},
+				 type: "POST",
+				 url: '/config',
+				 data: {algo: algo_val, conf: conf_val},
+				 success: (msg) => {
+					 loader.innerText = "Done! -- You May Need to reload page ¯\\_(ツ)_/¯ ";
+					 console.log(msg)
+				 },
+				 complete: () => { init() }
+			 });
+		 }
+		</script>
+  </head>
+
+  <body>
+    <h1>Distributed Systems Analytics</h1>
+		<div>Fair warning, some of the calculations for cost and utilisation may be off.
+			If you're in the mood, feel free to make a PR. All and any help is appreciated!</div>
+			<select id="conf-sel" name="conf" >
+			<%configs.forEach(function(conf){%>
+				<option value="<%=conf%>"><%=conf%></option>
+			<%})%>
+			</select>
+			<select id="algo-sel" name="algo">
+				<option value="ff">First Fit</option>
+				<option value="bf">Best Fit</option>
+				<option value="wf">Worst Fit</option>
+			</select>
+			<button onclick="handle_click()">Run</button>
+			<div id="loader"></div>
+    <div class="chart-container">
+      <canvas id="util"></canvas>
+      <canvas id="cost"></canvas>
+    </div>
+    <div id="times"><strong>t =</strong></div>
+    <div id="update"></div>
+    <div id="servers"></div>
+    <script src="chart.js"></script>
+  </body>
+</html>
