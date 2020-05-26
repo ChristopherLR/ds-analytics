@@ -11,8 +11,9 @@ Note: If ```python3 --version``` does not work and ```python --version``` does, 
 npm i
 npm run start
 ```
+You can then open your browser and go to the ipaddress of the device running the application **Probably localhost:3000**
 
-## Running your own client
+## Running your own ds-client
 run the parser.py in your project location and move data.json into the data directory
 
 ## Contributions
