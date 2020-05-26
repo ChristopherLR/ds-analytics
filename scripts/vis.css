@@ -1,5 +1,41 @@
-* {
-    box-sizing: border-box;
+.body-container {
+	display: flex;
+	flex-direction: column;
+	background-color: #fafafa;
+	justify-content: center;
+}
+
+.selections-container{
+	display: flex;
+	flex-direction: row;
+}
+
+.header {
+	background-color: #f0f1f5;
+	display: flex;
+	font-family: Arial;
+	justify-content: center;
+	max-width: 1024px;
+	height: 50px;
+	width: 80%;
+	align-self: center;
+	align-items: center;
+	flex-direction: column;
+	padding-left: 20px;
+	padding-right: 20px;
+	margin-bottom: 10px;
+	border-radius: 10px;
+}
+
+.container {
+	background-color: #f0f1f5;
+	display: flex;
+	max-width: 1024px;
+	width: 80%;
+	align-self: center;
+	flex-direction: column;
+	padding: 20px;
+	border-radius: 10px;
 }
 
 #times {

@@ -35,10 +35,14 @@
 		</script>
   </head>
 
-  <body>
-    <h1>Distributed Systems Analytics</h1>
+  <body class="body-container">
+		<div class="header">
+			<h1>Distributed Systems Analytics</h1>
+		</div>
+		<div class="container">
 		<div>Fair warning, some of the calculations for cost and utilisation may be off.
 			If you're in the mood, feel free to make a PR. All and any help is appreciated!</div>
+		<div class="selections-container">
 			<select id="conf-sel" name="conf" >
 			<%configs.forEach(function(conf){%>
 				<option value="<%=conf%>"><%=conf%></option>
@@ -50,6 +54,7 @@
 				<option value="wf">Worst Fit</option>
 			</select>
 			<button onclick="handle_click()">Run</button>
+			</div>
 			<div id="loader"></div>
     <div class="chart-container">
       <canvas id="util"></canvas>
@@ -59,5 +64,6 @@
     <div id="update"></div>
     <div id="servers"></div>
     <script src="chart.js"></script>
+		</div>
   </body>
 </html>
