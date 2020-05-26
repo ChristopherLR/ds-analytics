@@ -18,4 +18,4 @@ run the parser.py in your project location and move data.json into the data dire
 ## Contributions
 Thank you whoever it was from last year that made the parser.py, I definitely would not have been bothered to do the rest otherwise.
 This was hacked together, so feel free to improve the code in any way you like!
-Help would be greatly appreciated.
+**Help would be greatly appreciated**.
