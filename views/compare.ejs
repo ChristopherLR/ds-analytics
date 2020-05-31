@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>DS Analytics</title>
+    <link rel="stylesheet" type="text/css" href="vis.css" />
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+  </head>
+
+  <body class="body-container">
+		<div class="header">
+			<h1>Distributed Systems Analytics</h1>
+		</div>
+		<div class="container">
+			<div class="chart-container-1">
+				<canvas id="server-com"></canvas>
+				<canvas id="utils-com"></canvas>
+				<canvas id="cost-com"></canvas>
+				<canvas id="wait-com"></canvas>
+				<canvas id="exec-com"></canvas>
+				<canvas id="turn-com"></canvas>
+			</div>
+			<script src="compare.js"></script>
+		</div>
+  </body>
+</html>

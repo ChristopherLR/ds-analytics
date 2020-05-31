@@ -22,6 +22,10 @@ router.get("/", (req, res) => {
   res.render("visualiser", { configs: confs });
 });
 
+router.get("/comparison", (req, res) => {
+  res.render("compare", { configs: confs });
+});
+
 router.post("/config", (req, res) => {
   console.log(req.body);
   let config = "./configs/" + req.body.conf;

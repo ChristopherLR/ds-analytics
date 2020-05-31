@@ -1,0 +1,36 @@
+{
+	1: {
+		"best-fit":{
+			"servers-used": 26,
+			"average-utilisation": 51.17,
+			"total-cost": 249.43,
+			"average-waiting-time": 22,
+			"average-exec-time": 6140,
+			"average-turnaround": 6162
+		},
+		"first-fit":{
+			"servers-used": 26,
+			"average-utilisation": 51.17,
+			"total-cost": 249.43,
+			"average-waiting-time": 22,
+			"average-exec-time": 6140,
+			"average-turnaround": 6162
+		},
+		"worst-fit":{
+			"servers-used": 26,
+			"average-utilisation": 51.17,
+			"total-cost": 249.43,
+			"average-waiting-time": 22,
+			"average-exec-time": 6140,
+			"average-turnaround": 6162
+		},
+		"multi-fit":{
+			"servers-used": 26,
+			"average-utilisation": 51.17,
+			"total-cost": 249.43,
+			"average-waiting-time": 22,
+			"average-exec-time": 6140,
+			"average-turnaround": 6162
+		}
+	},
+}
